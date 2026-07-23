@@ -29,97 +29,149 @@
   <meta name="twitter:description" content="by tusitioya.cl y tenemos la mejor publicidad">
   <meta name="twitter:image" content="https://djsoul.tusitioya.cl/logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <style>
-    html, body { margin:0; padding:0; background:#040406; color:#fff; font-family:'Inter',-apple-system,sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
-    a { color:#ffd700; } a:hover { color:#fff2a3; }
-    ::selection { background:rgba(255,215,0,.3); }
+    html, body { margin:0; padding:0; background:#040406; color:#fff; font-family:'Oswald',-apple-system,sans-serif; overflow-x:hidden; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+    
+    /* Grunge texture overlay */
+    body::after {
+      content:""; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1; pointer-events:none;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 2px),
+                  radial-gradient(circle at center, transparent 30%, rgba(4,4,6,0.8) 100%);
+    }
+
+    a { color:#ccff00; } a:hover { color:#fff; }
+    ::selection { background:#ff0033; color:#fff; }
     @keyframes fadeUp { from { opacity:0; transform:translateY(24px);} to { opacity:1; transform:translateY(0);} }
-    @keyframes logoPulse { 0%,100% { filter:drop-shadow(0 0 20px rgba(255,215,0,0.5)) drop-shadow(0 0 40px rgba(255,215,0,0.2)); transform:scale(1); } 50% { filter:drop-shadow(0 0 35px rgba(255,215,0,0.85)) drop-shadow(0 0 60px rgba(255,215,0,0.4)); transform:scale(1.02); } }
+    @keyframes glitch {
+      0% { transform: translate(0) }
+      20% { transform: translate(-2px, 2px) }
+      40% { transform: translate(-2px, -2px) }
+      60% { transform: translate(2px, 2px) }
+      80% { transform: translate(2px, -2px) }
+      100% { transform: translate(0) }
+    }
+    
+    .urban-card {
+      background:#0a0a0a; border:3px solid #ccff00; box-shadow:8px 8px 0px #ff0033; padding:40px; 
+      transition:all .2s ease;
+    }
+    .urban-card:hover { transform:translate(-4px,-4px); box-shadow:12px 12px 0px #ff0033; }
+    .urban-title { font-family:'Permanent Marker', cursive; font-size:2.2rem; margin:0 0 16px 0; color:#ccff00; text-transform:uppercase; letter-spacing:1px; line-height:1.2; text-shadow:3px 3px 0px #ff0033;}
+    .urban-text { font-size:1.25rem; line-height:1.6; color:#e5e7eb; margin:0; font-weight:400; letter-spacing:0.5px;}
+
+    @keyframes reggaeton-boom {
+      0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(204,255,0,0.2)); }
+      15% { transform: scale(1.12); filter: drop-shadow(0 0 25px rgba(255,0,51,0.8)); }
+      35% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(204,255,0,0.2)); }
+      100% { transform: scale(1); }
+    }
+    @keyframes reggaeton-vibes {
+      0% { transform: scale(1); opacity: 0.8; filter: blur(2px); }
+      100% { transform: scale(1.35); opacity: 0; filter: blur(12px); }
+    }
+    
+    .sticker {
+      display: inline-block; background: #fff; color: #000; padding: 2px 6px; 
+      border: 2px solid #0a0a0a; box-shadow: 3px 3px 0px #ff0033;
+      margin-right: 10px; font-size: 1.4rem; transition: transform 0.2s;
+    }
+    .sticker:hover { transform: scale(1.3) rotate(0deg) !important; z-index:10; position:relative; box-shadow: 4px 4px 0px #ccff00;}
+
+    .btn-wsp { color:#fff !important; padding:12px 28px; border:3px solid #25D366; background:#25D366; font-weight:700; transition:all .2s; box-shadow:4px 4px 0px #0a0a0a; display:inline-block; text-decoration:none; text-transform:uppercase; letter-spacing:1px; }
+    .btn-wsp:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0px #0a0a0a; background:#1ebe57;}
+    
+    .btn-tk { color:#0a0a0a !important; padding:12px 28px; border:3px solid #ccff00; background:#ccff00; font-weight:700; transition:all .2s; box-shadow:4px 4px 0px #ff0033; display:inline-block; text-decoration:none; text-transform:uppercase; letter-spacing:1px; }
+    .btn-tk:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0px #ff0033; background:#e5ff4d;}
+
+    .btn-ig { color:#fff !important; padding:12px 28px; border:3px solid #ff0033; background:#ff0033; font-weight:700; transition:all .2s; box-shadow:4px 4px 0px #ccff00; display:inline-block; text-decoration:none; text-transform:uppercase; letter-spacing:1px; }
+    .btn-ig:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0px #ccff00; background:#e6002e;}
+
     @media (max-width: 768px) { .grid-2 { grid-template-columns:1fr !important; } }
   </style>
 </helmet>
 <canvas id="bg-canvas" style="position:fixed; top:0; left:0; z-index:0; width:100vw; height:100vh; display:block; pointer-events:none;"></canvas>
 <main style="position:relative; z-index:2; max-width:900px; margin:0 auto; padding:60px 20px; display:flex; flex-direction:column; gap:40px">
 
-  <header style="background:rgba(10,10,16,.65); backdrop-filter:blur(24px) saturate(1.4); -webkit-backdrop-filter:blur(24px) saturate(1.4); border:1px solid rgba(255,215,0,.25); border-radius:24px; padding:48px 40px; box-shadow:0 12px 40px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,215,0,.2); text-align:center; animation:fadeUp .8s ease both" style-hover="border-color:rgba(255,215,0,.6); transform:translateY(-2px); transition:all .3s ease">
-    <!-- LOGO IMPLEMENTADO -->
-    <div style="margin:0 auto 16px auto; max-width:380px;">
-      <img src="./logo.jpg" alt="SOUL DJ Logo" style="width:100%; height:auto; display:block; margin:0 auto; mix-blend-mode:screen; animation:logoPulse 4s ease-in-out infinite;">
+  <header class="urban-card" style="text-align:center; animation:fadeUp .6s ease both; transform:rotate(-1deg);" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
+    <!-- LOGO IMPLEMENTADO (EFECTO PARLANTE REGGAETON) -->
+    <div style="margin:0 auto 20px auto; max-width:380px; position:relative;">
+      <img src="./logo.jpg" alt="" style="position:absolute; top:0; left:0; width:100%; height:auto; mix-blend-mode:screen; animation:reggaeton-vibes 0.63s ease-out infinite; pointer-events:none;">
+      <img src="./logo.jpg" alt="SOUL DJ Logo" style="position:relative; z-index:2; width:100%; height:auto; display:block; margin:0 auto; mix-blend-mode:screen; animation:reggaeton-boom 0.63s ease-in-out infinite;">
     </div>
 
-    <div style="font-size:.85rem; letter-spacing:4px; text-transform:uppercase; color:#ffd700; font-weight:600; margin-bottom:14px">Reggaeton Old School · Cumbia · Electrónica</div>
-    <p style="color:#d1d5db; font-size:1.15rem; margin:0 0 32px 0">8 años haciendo vibrar pistas en Santiago de Chile</p>
+    <div style="font-family:'Permanent Marker', cursive; font-size:1.8rem; letter-spacing:2px; text-transform:uppercase; color:#ff0033; margin-bottom:10px">Reggaeton Old School · Cumbia · Electrónica</div>
+    <p class="urban-text" style="font-size:1.4rem; color:#fff; margin:0 0 32px 0; text-transform:uppercase; font-weight:700;">8 años haciendo vibrar pistas en Santiago de Chile</p>
     
-    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap">
-      <a href="https://wa.me/56912345678?text=Hola%20DJ%20SOUL,%20v%C3%AD%20tu%20presskit%20y%20me%20interesa%20cotizar%20un%20evento!" target="_blank" style="color:#000; text-decoration:none; padding:12px 28px; border:1px solid #25D366; border-radius:50px; background:#25D366; font-weight:700; transition:all .3s; box-shadow:0 0 20px rgba(37,211,102,.4)">WhatsApp</a>
-      <a href="https://tiktok.com/@ALEXISDJSOUL" target="_blank" style="color:#000; text-decoration:none; padding:12px 28px; border:1px solid #ffd700; border-radius:50px; background:#ffd700; font-weight:700; transition:all .3s; box-shadow:0 0 20px rgba(255,215,0,.4)">TikTok</a>
-      <a href="https://instagram.com/@ALEXISDJSOUL" target="_blank" style="color:#fff; text-decoration:none; padding:12px 28px; border:1px solid rgba(255,255,255,.3); border-radius:50px; background:rgba(255,255,255,.1); font-weight:600; transition:all .3s">Instagram</a>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap">
+      <a href="https://wa.me/56912345678?text=Hola%20DJ%20SOUL,%20v%C3%AD%20tu%20presskit%20y%20me%20interesa%20cotizar%20un%20evento!" target="_blank" class="btn-wsp">WhatsApp</a>
+      <a href="https://tiktok.com/@ALEXISDJSOUL" target="_blank" class="btn-tk">TikTok</a>
+      <a href="https://instagram.com/@ALEXISDJSOUL" target="_blank" class="btn-ig">Instagram</a>
     </div>
   </header>
 
   <section class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:30px">
-    <div style="background:rgba(10,10,16,.65); backdrop-filter:blur(20px) saturate(1.3); -webkit-backdrop-filter:blur(20px) saturate(1.3); border:1px solid rgba(255,215,0,.2); border-radius:24px; padding:40px; box-shadow:0 8px 32px rgba(0,0,0,.45); transition:all .3s ease" style-hover="border-color:rgba(255,215,0,.5); transform:translateY(-3px)">
-      <h2 style="font-size:1.8rem; margin:0 0 16px 0; color:#ffd700; font-weight:700">Biografía & Misión</h2>
-      <p style="line-height:1.7; color:#e5e7eb; margin:0 0 12px 0">Con más de 8 años de trayectoria recorriendo pubs, discotecas y los eventos más exclusivos de Santiago, mi objetivo es simple: <strong style="color:#fff">leer la pista de baile y llevar la energía al máximo nivel.</strong></p>
-      <p style="line-height:1.7; color:#e5e7eb; margin:0">Como experto en <strong style="color:#ffd700">Open Format</strong>, creo transiciones únicas que viajan desde los clásicos del Reggaeton Old School y Cumbia, hasta los drops más explosivos de la Electrónica y Hits actuales. Cada set es una experiencia viva, diseñada para conectar con el público y no parar de bailar.</p>
+    <div class="urban-card" style="transform:rotate(1deg);" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
+      <h2 class="urban-title">Biografía & Misión</h2>
+      <p class="urban-text" style="margin:0 0 12px 0">Con más de 8 años de trayectoria recorriendo pubs, discotecas y los eventos más exclusivos de Santiago, mi objetivo es simple: <strong style="color:#ccff00">leer la pista de baile y llevar la energía al máximo nivel.</strong></p>
+      <p class="urban-text">Como experto en <strong style="color:#ff0033">Open Format</strong>, creo transiciones únicas que viajan desde los clásicos del Reggaeton Old School y Cumbia, hasta los drops más explosivos de la Electrónica y Hits actuales. Cada set es una experiencia viva, diseñada para conectar con el público y no parar de bailar.</p>
     </div>
-    <div style="background:rgba(10,10,16,.65); backdrop-filter:blur(20px) saturate(1.3); -webkit-backdrop-filter:blur(20px) saturate(1.3); border:1px solid rgba(255,215,0,.2); border-radius:24px; padding:40px; box-shadow:0 8px 32px rgba(0,0,0,.45); transition:all .3s ease" style-hover="border-color:rgba(255,215,0,.5); transform:translateY(-3px)">
-      <h2 style="font-size:1.8rem; margin:0 0 16px 0; color:#ffd700; font-weight:700">Setup Técnico</h2>
-      <ul style="padding-left:20px; margin:0; display:flex; flex-direction:column; gap:10px">
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Controlador:</strong> Pioneer DDJ-FLX6</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Sampler:</strong> Novation Launchpad X</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Laptop:</strong> Asus</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Streaming:</strong> Interfaz iRig 2 + Samsung A15</li>
+    <div class="urban-card" style="transform:rotate(-1deg);" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
+      <h2 class="urban-title">Setup Técnico</h2>
+      <ul style="padding-left:0; margin:0; list-style:none; display:flex; flex-direction:column; gap:16px">
+        <li class="urban-text"><span class="sticker" style="transform:rotate(-6deg);">🎛️</span> <strong style="color:#ccff00">Controlador:</strong> Pioneer DDJ-FLX6</li>
+        <li class="urban-text"><span class="sticker" style="transform:rotate(4deg); box-shadow:3px 3px 0px #ccff00;">🎛️</span> <strong style="color:#ccff00">Sampler:</strong> Novation Launchpad X</li>
+        <li class="urban-text"><span class="sticker" style="transform:rotate(-3deg);">💻</span> <strong style="color:#ccff00">Laptop:</strong> Asus</li>
+        <li class="urban-text"><span class="sticker" style="transform:rotate(6deg); box-shadow:3px 3px 0px #ccff00;">📱</span> <strong style="color:#ccff00">Streaming:</strong> Interfaz iRig 2 + Samsung A15</li>
       </ul>
     </div>
   </section>
 
   <section class="grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:30px">
-    <div style="background:rgba(10,10,16,.65); backdrop-filter:blur(20px) saturate(1.3); -webkit-backdrop-filter:blur(20px) saturate(1.3); border:1px solid rgba(255,215,0,.2); border-radius:24px; padding:40px; box-shadow:0 8px 32px rgba(0,0,0,.45); transition:all .3s ease" style-hover="border-color:rgba(255,215,0,.5); transform:translateY(-3px)">
-      <h2 style="font-size:1.8rem; margin:0 0 16px 0; color:#ffd700; font-weight:700">Servicios & Especialidades</h2>
-      <ul style="padding-left:20px; margin:0; display:flex; flex-direction:column; gap:10px">
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Clubs y Discotecas:</strong> Sets explosivos de alta energía adaptados a la tendencia nocturna.</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Eventos Corporativos:</strong> Musicalización profesional, versátil y con lectura de público.</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Matrimonios & Fiestas:</strong> Fiesta asegurada con un repertorio transversal para todas las edades.</li>
-        <li style="line-height:1.6; color:#e5e7eb"><strong style="color:#fff">Karaoke Videomix:</strong> Animación visual e interactiva en vivo con videos musicales sincronizados.</li>
+    <div class="urban-card" style="transform:rotate(-1deg);" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
+      <h2 class="urban-title">Servicios & Especialidades</h2>
+      <ul style="padding-left:20px; margin:0; display:flex; flex-direction:column; gap:12px">
+        <li class="urban-text"><strong style="color:#ccff00">Clubs y Discotecas:</strong> Sets explosivos de alta energía adaptados a la tendencia nocturna.</li>
+        <li class="urban-text"><strong style="color:#ccff00">Eventos Corporativos:</strong> Musicalización profesional, versátil y con lectura de público.</li>
+        <li class="urban-text"><strong style="color:#ccff00">Matrimonios & Fiestas:</strong> Fiesta asegurada con un repertorio transversal para todas las edades.</li>
+        <li class="urban-text"><strong style="color:#ccff00">Karaoke Videomix:</strong> Animación visual e interactiva en vivo con videos musicales sincronizados.</li>
       </ul>
     </div>
-    <div style="background:rgba(10,10,16,.65); backdrop-filter:blur(20px) saturate(1.3); -webkit-backdrop-filter:blur(20px) saturate(1.3); border:1px solid rgba(255,215,0,.2); border-radius:24px; padding:40px; box-shadow:0 8px 32px rgba(0,0,0,.45); transition:all .3s ease; display:flex; align-items:center; justify-content:center; text-align:center" style-hover="border-color:rgba(255,215,0,.5); transform:translateY(-3px)">
+    <div class="urban-card" style="transform:rotate(1deg); display:flex; align-items:center; justify-content:center; text-align:center" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
       <div>
-        <h2 style="font-size:1.8rem; margin:0 0 12px 0; color:#ffd700; font-weight:700">¿Listo para la fiesta?</h2>
-        <p style="color:#e5e7eb; margin:0 0 24px 0">Reserva tu fecha ahora y aseguremos una noche verdaderamente inolvidable.</p>
-        <a href="https://wa.me/56912345678?text=Hola%20DJ%20SOUL,%20me%20interesa%20saber%20tus%20valores!" target="_blank" style="display:inline-block; color:#000; text-decoration:none; padding:14px 32px; border-radius:50px; background:#ffd700; font-weight:800; font-size:1.1rem; box-shadow:0 0 24px rgba(255,215,0,.5); transition:transform .2s ease" style-hover="transform:scale(1.05)">Solicitar Cotización</a>
+        <h2 class="urban-title" style="font-size:2.6rem;">¿Listo para el perreo?</h2>
+        <p class="urban-text" style="margin:0 0 24px 0">Reserva tu fecha ahora y aseguremos una noche verdaderamente inolvidable.</p>
+        <a href="https://wa.me/56912345678?text=Hola%20DJ%20SOUL,%20me%20interesa%20saber%20tus%20valores!" target="_blank" style="display:inline-block; color:#0a0a0a; text-decoration:none; padding:16px 36px; background:#ccff00; font-family:'Permanent Marker', cursive; font-size:1.4rem; box-shadow:6px 6px 0px #ff0033; transition:all .2s ease; border: 3px solid #0a0a0a;" style-hover="transform:translate(-2px,-2px); box-shadow:8px 8px 0px #ff0033;">Solicitar Cotización</a>
       </div>
     </div>
   </section>
 
-  <section style="background:rgba(10,10,16,.65); backdrop-filter:blur(20px) saturate(1.3); -webkit-backdrop-filter:blur(20px) saturate(1.3); border:1px solid rgba(255,215,0,.2); border-radius:24px; padding:40px; box-shadow:0 8px 32px rgba(0,0,0,.45); transition:all .3s ease" style-hover="border-color:rgba(255,215,0,.5); transform:translateY(-3px)">
-    <h2 style="font-size:1.8rem; margin:0 0 28px 0; color:#ffd700; font-weight:700">Línea de Tiempo &amp; Residencias</h2>
-    <div style="display:flex; flex-direction:column; gap:26px">
-      <div style="padding-left:22px; border-left:2px solid rgba(255,215,0,.3); position:relative">
-        <div style="position:absolute; left:-6px; top:5px; width:10px; height:10px; border-radius:50%; background:#ffd700; box-shadow:0 0 12px rgba(255,215,0,0.9)"></div>
-        <div style="font-size:.85rem; color:#ffd700; text-transform:uppercase; letter-spacing:1px; font-weight:600">Junio 2025 - Presente</div>
-        <div style="font-weight:700; font-size:1.2rem; margin:5px 0; color:#fff">Bariloche Restaurante (Mall Plaza Vespucio)</div>
-        <p style="line-height:1.6; color:#e5e7eb; margin:0">Viernes o sábado, 19:00 a 00:00 hrs. Musicalización y karaoke interactivo con videomix.</p>
+  <section class="urban-card" style="transform:rotate(0deg);" style-hover="transform:translate(-4px,-4px)">
+    <h2 class="urban-title">Residencias Actuales</h2>
+    <div style="display:flex; flex-direction:column; gap:30px">
+      <div style="padding-left:22px; border-left:4px solid #ff0033; position:relative">
+        <div style="position:absolute; left:-10px; top:5px; width:16px; height:16px; background:#ccff00; border:2px solid #0a0a0a"></div>
+        <div style="font-size:1rem; color:#ff0033; text-transform:uppercase; letter-spacing:1px; font-weight:700">Junio 2025 - Presente</div>
+        <div style="font-weight:700; font-size:1.6rem; margin:5px 0; color:#fff; font-family:'Permanent Marker', cursive;">Bariloche Restaurante (Mall Plaza Vespucio)</div>
+        <p class="urban-text">Viernes o sábado, 19:00 a 00:00 hrs. Musicalización y karaoke interactivo con videomix.</p>
       </div>
-      <div style="padding-left:22px; border-left:2px solid rgba(255,215,0,.3); position:relative">
-        <div style="position:absolute; left:-6px; top:5px; width:10px; height:10px; border-radius:50%; background:#e2e8f0; box-shadow:0 0 12px rgba(255,255,255,.8)"></div>
-        <div style="font-size:.85rem; color:#e2e8f0; text-transform:uppercase; letter-spacing:1px; font-weight:600">RESIDENCIA</div>
-        <div style="font-weight:700; font-size:1.2rem; margin:5px 0; color:#fff">Shopdog (Plaza Oeste)</div>
-        <p style="line-height:1.6; color:#e5e7eb; margin:0">Musicalización ambiental y sets en vivo, 18:00 a 22:00 hrs.</p>
+      <div style="padding-left:22px; border-left:4px solid #ccff00; position:relative">
+        <div style="position:absolute; left:-10px; top:5px; width:16px; height:16px; background:#ff0033; border:2px solid #0a0a0a"></div>
+        <div style="font-size:1rem; color:#ccff00; text-transform:uppercase; letter-spacing:1px; font-weight:700">RESIDENCIA</div>
+        <div style="font-weight:700; font-size:1.6rem; margin:5px 0; color:#fff; font-family:'Permanent Marker', cursive;">Shopdog (Plaza Oeste)</div>
+        <p class="urban-text">Musicalización ambiental y sets en vivo, 18:00 a 22:00 hrs.</p>
       </div>
-      <div style="padding-left:22px; border-left:2px solid rgba(255,215,0,.3); position:relative">
-        <div style="position:absolute; left:-6px; top:5px; width:10px; height:10px; border-radius:50%; background:#ffd700; box-shadow:0 0 12px rgba(255,215,0,.8)"></div>
-        <div style="font-size:.85rem; color:#ffd700; text-transform:uppercase; letter-spacing:1px; font-weight:600">Disponible todo el año</div>
-        <div style="font-weight:700; font-size:1.2rem; margin:5px 0; color:#fff">Eventos Privados</div>
-        <p style="line-height:1.6; color:#e5e5ee; margin:0">Cumpleaños, matrimonios y fiestas corporativas.</p>
+      <div style="padding-left:22px; border-left:4px solid #ff0033; position:relative">
+        <div style="position:absolute; left:-10px; top:5px; width:16px; height:16px; background:#ccff00; border:2px solid #0a0a0a"></div>
+        <div style="font-size:1rem; color:#ff0033; text-transform:uppercase; letter-spacing:1px; font-weight:700">Disponible todo el año</div>
+        <div style="font-weight:700; font-size:1.6rem; margin:5px 0; color:#fff; font-family:'Permanent Marker', cursive;">Eventos Privados</div>
+        <p class="urban-text">Cumpleaños, matrimonios y fiestas corporativas.</p>
       </div>
     </div>
   </section>
 
-  <footer style="text-align:center; color:#8a8a94; font-size:.85rem; padding:10px 0 30px">© 2026 DJ SOUL — dvjsoul.tusitioya.cl · Parte del ecosistema <a href="https://tusitioya.cl" target="_blank" style="color:#ffd700; text-decoration:none">TuSitioYa</a></footer>
+  <footer style="text-align:center; color:#e5e7eb; font-size:1rem; padding:10px 0 30px; font-family:'Oswald', sans-serif;">© 2026 DJ SOUL — djsoul.tusitioya.cl · By <a href="https://tusitioya.cl" target="_blank" style="color:#ccff00; font-weight:700; text-decoration:underline;">TuSitioYa</a></footer>
 </main>
 </x-dc>
 
@@ -149,16 +201,16 @@ class Component extends DCLogic {
     const canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
     
-    // Paleta Dorado Logo: Gold, Silver/White, Deep Amber
-    const GOLD = new THREE.Color('#ffd700');
-    const SILVER = new THREE.Color('#e2e8f0');
-    const AMBER = new THREE.Color('#ff8c00');
-    const PALETTE = [GOLD, SILVER, AMBER];
+    // Paleta Urbana: Neon Yellow, Deep Red, Black
+    const NEON = new THREE.Color('#ccff00');
+    const RED = new THREE.Color('#ff0033');
+    const BLACK = new THREE.Color('#0a0a0a');
+    const PALETTE = [NEON, RED, BLACK];
     const density = 1400;
-    const speed = 8; // Velocidad reducida para un efecto más chill/premium
+    const speed = 10; 
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x040406, 0.011);
+    scene.fog = new THREE.FogExp2(0x040406, 0.015);
     const camera = new THREE.PerspectiveCamera(78, innerWidth / innerHeight, 0.1, 400);
     camera.position.set(0, 0, 30);
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -173,7 +225,7 @@ class Component extends DCLogic {
     const ringGeo = new THREE.TorusGeometry(TUNNEL_R, 0.09, 8, 72);
     for (let i = 0; i < RINGS; i++) {
       const col = PALETTE[i % 3];
-      const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false });
+      const mat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false });
       const ring = new THREE.Mesh(ringGeo, mat);
       ring.position.z = 30 - i * (DEPTH / RINGS);
       scene.add(ring);
@@ -182,7 +234,7 @@ class Component extends DCLogic {
 
     const tube = new THREE.Mesh(
       new THREE.CylinderGeometry(TUNNEL_R + 0.4, TUNNEL_R + 0.4, DEPTH + 60, 28, 24, true),
-      new THREE.MeshBasicMaterial({ color: 0x4a3b00, wireframe: true, transparent: true, opacity: 0.18 })
+      new THREE.MeshBasicMaterial({ color: 0x222222, wireframe: true, transparent: true, opacity: 0.4 })
     );
     tube.rotation.x = Math.PI / 2;
     tube.position.z = 30 - DEPTH / 2;
@@ -198,10 +250,10 @@ class Component extends DCLogic {
       pos[i * 3 + 2] = 40 - Math.random() * DEPTH;
     }
     pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    const dust = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: 0.55, map: glowTex, color: 0xffea78, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const dust = new THREE.Points(pGeo, new THREE.PointsMaterial({ size: 0.6, map: glowTex, color: 0xff0033, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false }));
     scene.add(dust);
 
-    const endGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: GOLD, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending, depthWrite: false }));
+    const endGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: NEON, transparent: true, opacity: 0.8, blending: THREE.AdditiveBlending, depthWrite: false }));
     endGlow.scale.set(75, 75, 1);
     endGlow.position.z = 30 - DEPTH;
     scene.add(endGlow);
@@ -227,30 +279,28 @@ class Component extends DCLogic {
       this._raf = requestAnimationFrame(animate);
       const dt = Math.min(clock.getDelta(), 0.05);
       const t = clock.getElapsedTime();
-      const beat = Math.max(0, Math.sin(t * Math.PI * 1.6));
+      const beat = Math.max(0, Math.sin(t * Math.PI * 2.0)); // Beat más rápido para el perreo
       for (const ring of rings) {
         ring.position.z += speed * dt;
         if (ring.position.z > 34) ring.position.z -= DEPTH;
         const prox = 1 - Math.min(1, (34 - ring.position.z) / DEPTH);
-        ring.material.opacity = 0.2 + prox * 0.5 + beat * 0.12;
-        ring.rotation.z += dt * 0.12;
-        const s = 1 + beat * 0.02;
+        ring.material.opacity = 0.3 + prox * 0.5 + beat * 0.2;
+        ring.rotation.z += dt * 0.15;
+        const s = 1 + beat * 0.05;
         ring.scale.set(s, s, 1);
       }
       const arr = pGeo.attributes.position.array;
       for (let i = 2; i < arr.length; i += 3) {
-        arr[i] += speed * 1.8 * dt;
+        arr[i] += speed * 2.0 * dt;
         if (arr[i] > 36) arr[i] -= DEPTH;
       }
       pGeo.attributes.position.needsUpdate = true;
-      tube.rotation.y += dt * 0.03;
-      endGlow.material.opacity = 0.5 + beat * 0.3;
+      tube.rotation.y += dt * 0.05;
+      endGlow.material.opacity = 0.6 + beat * 0.4;
       
-      // Respetar preferencias de accesibilidad (reducir movimiento si el usuario lo tiene configurado en su sistema)
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const motionScale = prefersReducedMotion ? 0.2 : 1.0;
 
-      // Mayor efecto inmersivo del mouse (multiplicadores subidos de 8 a 15 en X, y de 6 a 12 en Y)
       camera.position.x += (Math.sin(t * 0.4) * 2.2 + (mouseX * 15 * motionScale) - camera.position.x) * 0.05;
       camera.position.y += (Math.cos(t * 0.55) * 1.6 + (-mouseY * 12 * motionScale) - camera.position.y) * 0.05;
       camera.lookAt(Math.sin(t * 0.4) * 1.5, Math.cos(t * 0.55) * 1.0, -60);
