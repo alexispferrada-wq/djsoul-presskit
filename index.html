@@ -88,6 +88,47 @@
     .btn-ig { color:#fff !important; padding:12px 28px; border:3px solid #ff0033; background:#ff0033; font-weight:700; transition:all .2s; box-shadow:4px 4px 0px #ccff00; display:inline-block; text-decoration:none; text-transform:uppercase; letter-spacing:1px; }
     .btn-ig:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0px #ccff00; background:#e6002e;}
 
+    /* GEAR GRID & CSS ART */
+    .gear-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top:20px; }
+    .gear-item { background: #0a0a0a; border: 2px solid #333; position:relative; padding: 16px; display:flex; align-items:center; gap:20px; overflow:hidden; transition:all .3s ease;}
+    .gear-item::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; background:repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(204,255,0,0.03) 10px, rgba(204,255,0,0.03) 20px); pointer-events:none;}
+    .gear-item:hover { border-color: #ccff00; transform:translateX(5px); }
+    .gear-item:hover .gear-title { color: #ccff00; }
+
+    .gear-icon-box { flex-shrink:0; width: 70px; height: 70px; background:#111; border:2px dashed #ff0033; display:flex; justify-content:center; align-items:center; transform:rotate(-3deg); box-shadow: 4px 4px 0px rgba(255,0,51,0.4); }
+
+    .gear-info { flex-grow:1; z-index:2; }
+    .gear-title { font-family:'Permanent Marker', cursive; font-size:1.4rem; margin:0 0 4px 0; color:#fff; transition: color .2s;}
+    .gear-desc { font-family:'Oswald', sans-serif; font-size:1.1rem; color:#aaa; margin:0; letter-spacing:0.5px;}
+
+    /* CSS ART: CONTROLLER */
+    .css-controller { width: 54px; height: 24px; background:#222; border-radius:3px; display:flex; justify-content:space-between; padding:3px; position:relative; border-bottom:3px solid #111;}
+    .css-jog { width: 18px; height: 18px; border:2px solid #555; border-radius:50%; background:radial-gradient(circle, #333 30%, #111 100%); position:relative;}
+    .css-jog::after { content:""; position:absolute; top:50%; left:50%; width:6px; height:6px; background:#ccff00; border-radius:50%; transform:translate(-50%,-50%); box-shadow:0 0 5px #ccff00;}
+    .css-mixer { width:8px; height:100%; background:#111; display:flex; flex-direction:column; justify-content:space-evenly; align-items:center;}
+    .css-knob { width:4px; height:2px; background:#ff0033; }
+
+    /* CSS ART: LAUNCHPAD */
+    .css-pad { width: 36px; height: 36px; background:#111; display:grid; grid-template-columns:repeat(4,1fr); gap:2px; padding:3px; border-radius:2px; border-bottom:3px solid #000;}
+    .pad-btn { background:#333; border-radius:1px; }
+    .pad-on-1 { background:#ff0033; box-shadow:0 0 5px #ff0033;}
+    .pad-on-2 { background:#ccff00; box-shadow:0 0 5px #ccff00;}
+    .pad-on-3 { background:#00d4ff; box-shadow:0 0 5px #00d4ff;}
+
+    /* CSS ART: LAPTOP */
+    .css-laptop { display:flex; flex-direction:column; align-items:center; }
+    .css-screen { width: 44px; height: 30px; background:#000; border:2px solid #555; border-radius:3px 3px 0 0; display:flex; justify-content:center; align-items:center; position:relative;}
+    .css-screen::after { content:""; width:10px; height:10px; background:#ccff00; filter:blur(2px); border-radius:50%;}
+    .css-base { width: 54px; height: 5px; background:#888; border-radius:0 0 4px 4px; border-bottom:2px solid #444;}
+
+    /* CSS ART: PHONE */
+    .css-phone-rig { display:flex; align-items:center; gap:4px; }
+    .css-phone { width:18px; height:32px; border:2px solid #888; border-radius:4px; background:#000; position:relative; display:flex; justify-content:center; align-items:center;}
+    .css-phone-rec { width:6px; height:6px; background:#ff0033; border-radius:50%; animation: rec-blink 1s infinite;}
+    .css-cable { width: 8px; height: 2px; background:#555; }
+    .css-interface { width:12px; height:20px; background:#ff0033; border-radius:2px;}
+    @keyframes rec-blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
     @media (max-width: 768px) { .grid-2 { grid-template-columns:1fr !important; } }
   </style>
 </helmet>
@@ -119,12 +160,68 @@
     </div>
     <div class="urban-card" style="transform:rotate(-1deg);" style-hover="transform:rotate(0deg) translate(-4px,-4px)">
       <h2 class="urban-title">Setup Técnico</h2>
-      <ul style="padding-left:0; margin:0; list-style:none; display:flex; flex-direction:column; gap:16px">
-        <li class="urban-text"><span class="sticker" style="transform:rotate(-6deg);">🎛️</span> <strong style="color:#ccff00">Controlador:</strong> Pioneer DDJ-FLX6</li>
-        <li class="urban-text"><span class="sticker" style="transform:rotate(4deg); box-shadow:3px 3px 0px #ccff00;">🎛️</span> <strong style="color:#ccff00">Sampler:</strong> Novation Launchpad X</li>
-        <li class="urban-text"><span class="sticker" style="transform:rotate(-3deg);">💻</span> <strong style="color:#ccff00">Laptop:</strong> Asus</li>
-        <li class="urban-text"><span class="sticker" style="transform:rotate(6deg); box-shadow:3px 3px 0px #ccff00;">📱</span> <strong style="color:#ccff00">Streaming:</strong> Interfaz iRig 2 + Samsung A15</li>
-      </ul>
+      
+      <div class="gear-grid">
+        <!-- Controlador -->
+        <div class="gear-item">
+          <div class="gear-icon-box">
+            <div class="css-controller">
+              <div class="css-jog"></div>
+              <div class="css-mixer"><div class="css-knob"></div><div class="css-knob" style="background:#ccff00"></div><div class="css-knob"></div></div>
+              <div class="css-jog"></div>
+            </div>
+          </div>
+          <div class="gear-info">
+            <h3 class="gear-title">Controlador Principal</h3>
+            <p class="gear-desc">Pioneer DDJ-FLX6</p>
+          </div>
+        </div>
+
+        <!-- Sampler -->
+        <div class="gear-item">
+          <div class="gear-icon-box" style="border-color:#ccff00; box-shadow: 4px 4px 0px rgba(204,255,0,0.4);">
+            <div class="css-pad">
+              <div class="pad-btn pad-on-1"></div><div class="pad-btn"></div><div class="pad-btn pad-on-2"></div><div class="pad-btn"></div>
+              <div class="pad-btn"></div><div class="pad-btn pad-on-3"></div><div class="pad-btn"></div><div class="pad-btn pad-on-1"></div>
+              <div class="pad-btn pad-on-2"></div><div class="pad-btn"></div><div class="pad-btn"></div><div class="pad-btn pad-on-3"></div>
+              <div class="pad-btn"></div><div class="pad-btn pad-on-1"></div><div class="pad-btn"></div><div class="pad-btn"></div>
+            </div>
+          </div>
+          <div class="gear-info">
+            <h3 class="gear-title">Sampler / Pads</h3>
+            <p class="gear-desc">Novation Launchpad X</p>
+          </div>
+        </div>
+
+        <!-- Laptop -->
+        <div class="gear-item">
+          <div class="gear-icon-box">
+            <div class="css-laptop">
+              <div class="css-screen"></div>
+              <div class="css-base"></div>
+            </div>
+          </div>
+          <div class="gear-info">
+            <h3 class="gear-title">Cerebro / Software</h3>
+            <p class="gear-desc">Laptop Asus</p>
+          </div>
+        </div>
+
+        <!-- Streaming -->
+        <div class="gear-item">
+          <div class="gear-icon-box" style="border-color:#ccff00; box-shadow: 4px 4px 0px rgba(204,255,0,0.4);">
+            <div class="css-phone-rig">
+              <div class="css-interface"></div>
+              <div class="css-cable"></div>
+              <div class="css-phone"><div class="css-phone-rec"></div></div>
+            </div>
+          </div>
+          <div class="gear-info">
+            <h3 class="gear-title">Streaming Rig</h3>
+            <p class="gear-desc">iRig 2 + Samsung A15</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
